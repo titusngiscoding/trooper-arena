@@ -1,12 +1,11 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+app.use(express.static(__dirname + '/public'));
 
 io.on('connection', (socket) => {
     io.emit('news','A Trooper has come.');
