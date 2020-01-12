@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Trooper Arena</title>
+  <meta name="description" content="An in-browser 3D shooter">
+  <meta name="author" content="Titus Ng">
+
+</head>
+
+<body>
+    <div id="displaybox"></div>
+    <input type="text" id="msgbox">
+    <input type="button" id="btn" onclick="onSend()" value="Send">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+        let el;
+        socket.on('news', (data) => {
+        el = document.getElementById('displaybox');
+        el.innerHTML+=data+"<br>";
+      });
+        document.body.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("btn").click();
+            }
+        });
+        function onSend()
+        {
+            if(document.getElementById("msgbox").value!=="")
+            {
+                socket.emit('say', document.getElementById("msgbox").value);
+                document.getElementById("msgbox").value="";
+            }
+        }
+    </script>
+</body>
+</html>
